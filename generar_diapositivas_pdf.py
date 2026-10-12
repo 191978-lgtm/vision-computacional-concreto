@@ -43,7 +43,6 @@ class SlideCanvas(canvas.Canvas):
     def draw_slide_decorations(self, total_pages):
         # La diapositiva 1 es la carátula principal
         if self._pageNumber == 1:
-            # Borde decorativo exterior formal
             self.saveState()
             self.setStrokeColor(colors.HexColor("#1E3A8A"))
             self.setLineWidth(3)
@@ -65,7 +64,7 @@ class SlideCanvas(canvas.Canvas):
 
         self.setFont("Helvetica", 8)
         self.setFillColor(colors.HexColor("#64748B"))
-        self.drawRightString(PAGE_WIDTH - 36, PAGE_HEIGHT - 30, "PROYECTO SEMESTRAL — FASE 1: PREPROCESAMIENTO")
+        self.drawRightString(PAGE_WIDTH - 36, PAGE_HEIGHT - 30, "PROYECTO SEMESTRAL — INSPECCIÓN DE CONCRETO")
 
         # Pie de diapositiva
         self.setStrokeColor(colors.HexColor("#E2E8F0"))
@@ -91,7 +90,6 @@ def build_slides_pdf():
 
     styles = getSampleStyleSheet()
 
-    # Estilos Tipográficos Formales
     s_tag = ParagraphStyle(
         'SlideTag', parent=styles['Normal'],
         fontName='Helvetica-Bold', fontSize=8, leading=10,
@@ -447,23 +445,24 @@ def build_slides_pdf():
     story.append(PageBreak())
 
     # ==============================================================
-    # DIAPOSITIVA 9: CONCLUSIONES Y PREGUNTAS
+    # DIAPOSITIVA 9: CIERRE Y CONCLUSIONES
     # ==============================================================
-    story.append(Paragraph("CIERRE DE LA EXPOSICIÓN", s_tag))
-    story.append(Paragraph("Conclusiones y Respuestas a Preguntas del Docente", s_title))
+    story.append(Paragraph("CIERRE DE LA FASE 1", s_tag))
+    story.append(Paragraph("Conclusiones Técnicas y Validación de la Entrega", s_title))
 
     col_c1 = [
-        Paragraph("Logros Principales del Proyecto", s_card_title),
+        Paragraph("Logros Principales de la Fase 1", s_card_title),
         Paragraph("• <b>Dataset Desafiador Dominado:</b> De imágenes crudas con grano e iluminación dispar a matrices estandarizadas de alta calidad.", s_bullet),
         Paragraph("• <b>Sinergia Teórica Total:</b> Se articularon 5 temas del curso: muestreo bicúbico, espacios de color, ruido/Gaussiano, CLAHE y morfología.", s_bullet),
-        Paragraph("• <b>Listo para la Fase 2:</b> Datos estructurados en <code>dataset_preprocesado/</code> listos para extracción de características o Deep Learning.", s_bullet)
+        Paragraph("• <b>Estructura 'Antes vs. Después':</b> Separación estricta de <code>dataset_muestra_original/</code> y <code>dataset_preprocesado/</code> para trazabilidad total.", s_bullet),
+        Paragraph("• <b>Listo para la Fase 2:</b> Datos procesados y balanceados en 224×224 para extracción de características o entrenamiento neuronal.", s_bullet)
     ]
 
     col_c2 = [
-        Paragraph("Respuestas Técnicas Preparadas", s_card_title),
-        Paragraph("• <b>¿Por qué 2 carpetas?:</b> Muestra Original ('Antes') para trazabilidad y Dataset Preprocesado ('Después') para el modelo.", s_bullet),
+        Paragraph("Respuestas Técnicas Preparadas para el Docente", s_card_title),
+        Paragraph("• <b>¿Por qué 2 carpetas?:</b> Datos crudos para comparación y procesados para el clasificador.", s_bullet),
         Paragraph("• <b>¿Por qué Bicúbico?:</b> Para no difuminar bordes sutiles de 1 píxel al escalar a 224×224.", s_bullet),
-        Paragraph("• <b>¿Por qué CLAHE?:</b> Porque la ecualización global quema zonas con sombras y sobreamplifica ruido en zonas lisas.", s_bullet),
+        Paragraph("• <b>¿Por qué CLAHE?:</b> Porque la ecualización global quema zonas con sombras y sobreamplifica ruido en zonas homogéneas.", s_bullet),
         Paragraph("• <b>¿Por qué Cierre?:</b> Porque reconecta fisuras discontinuas sin borrarlas como haría la apertura.", s_bullet)
     ]
 
@@ -479,9 +478,48 @@ def build_slides_pdf():
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
     ]))
     story.append(t_s9)
+    story.append(PageBreak())
+
+    # ==============================================================
+    # DIAPOSITIVA 10: OBJETIVO FINAL DEL PROYECTO SEMESTRAL
+    # ==============================================================
+    story.append(Paragraph("VISIÓN A FUTURO DEL PROYECTO", s_tag))
+    story.append(Paragraph("Objetivo Final del Proyecto Semestral", s_title))
+
+    col_obj_main = [
+        Paragraph("Sistema Automatizado de Inspección Visual y Cuantificación de Daño Estructural", s_card_title),
+        Paragraph("El proyecto semestral no se limitará a una clasificación binaria trivial de imágenes, sino que evolucionará hacia una <b>herramienta integral de diagnóstico estructural</b> compuesta por tres fases operativas:", s_body),
+        Spacer(1, 4),
+        Paragraph("<b>1. Clasificación y Detección de Falla:</b><br/>Determinar con alta fiabilidad si una superficie (muro, columna, viga o pavimento) presenta fisuración estructural o permanece íntegra, comparando modelos de descriptores tradicionales vs. Redes Convolucionales (CNN).", s_bullet),
+        Paragraph("<b>2. Segmentación de Precisión de la Silueta:</b><br/>Aislar la geometría exacta de la grieta del fondo rugoso utilizando los filtros y operaciones morfológicas desarrolladas en esta etapa previa.", s_bullet),
+        Paragraph("<b>3. Estimación Métrica de Severidad y Orientación:</b><br/>Cuantificar parámetros estructurales clave como la <b>longitud en píxeles</b>, el <b>grosor medio/máximo</b> y el <b>ángulo de orientación</b> (vertical, horizontal o diagonal a 45°), dato que en ingeniería civil determina el tipo de esfuerzo crítico (cortante, compresión o asentamiento).", s_bullet)
+    ]
+
+    col_obj_impact = [
+        Paragraph("Impacto y Aplicación Práctica en Ingeniería", s_card_title),
+        Paragraph("• <b>Inspección de Infraestructura Civil:</b> Aplicable a puentes, túneles, represas y edificaciones con riesgo sísmico (altamente relevante en la región de Cusco y Perú).", s_bullet),
+        Paragraph("• <b>Reducción de Costos y Riesgo Humano:</b> Permite inspeccionar zonas de difícil acceso montando el sistema en vehículos aéreos no tripulados (drones) o cámaras móviles.", s_bullet),
+        Paragraph("• <b>Mantenimiento Preventivo:</b> Identificación temprana de micro-fisuras antes de que comprometan la seguridad de la estructura.", s_bullet),
+        Spacer(1, 8),
+        Paragraph("<b>Estado de la Entrega 1:</b><br/>Dataset limpio, balanceado (500 imágenes), preprocesado en 224×224 y respaldado en repositorio público.", ParagraphStyle('StatusBox', parent=s_body, fontName='Helvetica-Bold', textColor=colors.HexColor("#166534")))
+    ]
+
+    t_s10 = Table([[col_obj_main, col_obj_impact]], colWidths=[365, 335], hAlign='CENTER')
+    t_s10.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), colors.HexColor("#F8FAFC")),
+        ('BACKGROUND', (1, 0), (1, 0), colors.HexColor("#F0FDF4")),
+        ('BOX', (0, 0), (-1, -1), 1, colors.HexColor("#CBD5E1")),
+        ('INNERGRID', (0, 0), (-1, -1), 0.5, colors.HexColor("#E2E8F0")),
+        ('TOPPADDING', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
+        ('LEFTPADDING', (0, 0), (-1, -1), 12),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    story.append(t_s10)
 
     doc.build(story, canvasmaker=SlideCanvas)
-    print(f"Diapositivas en PDF generadas exitosamente en: {OUTPUT_PDF}")
+    print(f"Diapositivas en PDF con Objetivo Final generadas en: {OUTPUT_PDF}")
 
 
 if __name__ == "__main__":
